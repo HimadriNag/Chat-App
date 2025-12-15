@@ -1,6 +1,9 @@
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+
+////-------------Sign-Up--------------------------------
+
 export const signup = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -29,12 +32,12 @@ export const signup = async (req, res) => {
                 eamil: user.eamil,
                 profilePic: user.profilePic,
                 message: "User craeted successfully",
-                success: true
+                success: true,
             })
 
         }
-        else{
-            res.status(500).json({message:"Invalid user data"});
+        else {
+            res.status(500).json({ message: "Invalid user data" });
         }
 
 
@@ -44,3 +47,37 @@ export const signup = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
+//----------------------Log-in--------------------------------------
+
+export const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: "User Not found", success: false });
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Invalid credential", success: false });
+        }
+        generateToken(user._id, res);
+        res.status(201).json({
+            _id: user._id,
+            name: user.name,
+            eamil: user.eamil,
+            profilePic: user.profilePic,
+            message: "User login successfully",
+            success: true,
+        });
+
+
+    } catch (error) {
+        console.log("error in login", error);
+        res.status(500).json({ message: "Internal Server Error" });
+
+    }
+}
+
+//------------------------log-out-----------------------------------------
+
