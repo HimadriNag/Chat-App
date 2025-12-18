@@ -107,8 +107,8 @@ export const updateProfile = async (req, res) => {
         const updateUser = await User.findByIdAndUpdate(userId, { profilePic: reasult.secure_url }, { new: true });
         res.status(200).json({
             updateUser,
-            message:"Profile picture updated successfully",
-            success:true,
+            message: "Profile picture updated successfully",
+            success: true,
         });
 
     } catch (error) {
@@ -119,4 +119,15 @@ export const updateProfile = async (req, res) => {
 
 };
 
-//----------------------
+//----------------------Checking User is loged in or not-----
+
+export const isAuth = async (req, res) => {
+    try {
+        res.status(200).json(req.user);
+
+    } catch (error) {
+        console.log("error in update profile", error);
+        res.status(500).json({ message: "Internal Server Error" });
+
+    }
+}
