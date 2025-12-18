@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connectDB } from "./config/db.js";
-import userRoutes from "./routes/user.routes.js"
+import userRoutes from "./routes/user.routes.js";
+import messageRoutes from "./routes/message.routes.js";
 
 import dotenv from "dotenv";
 
@@ -25,7 +26,8 @@ app.use(cookieParser());
 app.get("/",(req,res)=>{
     res.send("Hello from server")
 })
-app.use("/api/user",userRoutes)
+app.use("/api/users",userRoutes)
+app.use("/api/messages",messageRoutes);
 app.listen(PORT,()=>{
     console.log(`server is running on PORT ${PORT}`)
 })
