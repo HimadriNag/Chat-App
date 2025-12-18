@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
-import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { generateToken } from "../lib/utils.js";
+import cloudinary from "../lib/cloudinary.js";
 
 ////-------------Sign-Up--------------------------------
 
@@ -83,8 +84,8 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
-        res.cookie("token","",{maxage:0});
-        res.status(200).json({message:"User logout successfully",success:true});
+        res.cookie("token", "", { maxage: 0 });
+        res.status(200).json({ message: "User logout successfully", success: true });
 
     } catch (error) {
         console.log("error in logout", error);
@@ -92,4 +93,30 @@ export const logout = async (req, res) => {
 
     }
 }
+//---------------------------Update-Profile----------------------------------
 
+export const updateProfile = async (req, res) => {
+    try {
+        const { profilePic } = req.body;
+        const userId = req.user._id;
+
+        if (!profilePic) {
+            return res.status(400).json({ message: "Profile picture is required", success: false });
+        }
+        const reasult = await cloudinary.uploader.upload(profilePic);
+        const updateUser = await User.findByIdAndUpdate(userId, { profilePic: reasult.secure_url }, { new: true });
+        res.status(200).json({
+            updateUser,
+            message:"Profile picture updated successfully",
+            success:true,
+        });
+
+    } catch (error) {
+        console.log("error in update profile", error);
+        res.status(500).json({ message: "Internal Server Error" });
+
+    }
+
+};
+
+//----------------------
