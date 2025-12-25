@@ -1,7 +1,9 @@
 import React from 'react'
 import { Link } from "react-router-dom";
+import { useAuthStore } from '../store/useAuthStore';
 
 const Navbar = () => {
+  const {logout}=useAuthStore();
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="flex-1">
@@ -29,7 +31,7 @@ const Navbar = () => {
               </Link>
             </li>
             
-            <li><p>Logout</p></li>
+            <li><p onClick={logout}>Logout</p></li>
           </ul>
         </div>
       </div>
