@@ -4,12 +4,13 @@ import cookieParser from "cookie-parser";
 import { connectDB } from "./config/db.js";
 import userRoutes from "./routes/user.routes.js";
 import messageRoutes from "./routes/message.routes.js";
+import { app, server } from "./lib/socket.js";
 
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const app=express();
+// const app=express();
 
 const PORT=process.env.PORT || 5000
 //db connection
@@ -28,6 +29,6 @@ app.get("/",(req,res)=>{
 })
 app.use("/api/users",userRoutes)
 app.use("/api/messages",messageRoutes);
-app.listen(PORT,()=>{
+server.listen(PORT,()=>{
     console.log(`server is running on PORT ${PORT}`)
 })

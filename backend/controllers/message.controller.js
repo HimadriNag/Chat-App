@@ -1,5 +1,6 @@
 import Message from "../models/message.model.js";
 import User from "../models/user.model.js";
+import { getReceiverSocketId, io } from "../lib/socket.js";
 import cloudinary from "../lib/cloudinary.js";
 
 //----for showing all people i messaged earlier---------
@@ -8,7 +9,7 @@ export const getUser = async (req, res) => {
     try {
         const loggedInUserId = req.user._id;
         const fillteredUsers = await User.find({ _id: { $ne: loggedInUserId }, }).select("-password");
-        res.status(200).json( fillteredUsers )
+        res.status(200).json(fillteredUsers)
 
     } catch (error) {
         console.log("Error in getUsers", error.message);
@@ -24,8 +25,8 @@ export const getUser = async (req, res) => {
 export const getMessages = async (req, res) => {
     try {
         const senderId = req.user._id;
-        const { receiverId } = req.params;
-        const meassage = await Message.find({
+        const { id: receiverId } = req.params;
+        const messages = await Message.find({
             $or: [
                 {
                     senderId: senderId, receiverId: receiverId
@@ -34,7 +35,7 @@ export const getMessages = async (req, res) => {
                 { senderId: receiverId, receiverId: senderId },
             ],
         });
-        res.status(200).json({ message, success: true });
+        res.status(200).json({ messages });
 
     } catch (error) {
         console.log("Error in get message", error.message);
@@ -49,18 +50,25 @@ export const sendMessage = async (req, res) => {
     try {
         const senderId = req.user._id;
         const { receiverId } = req.params;
-        const {text,image}=req.body;
+        const { text, image } = req.body;
         let imageUrl;
-        if(image){
-            const reasult=await cloudinary.uploader.upload(image);
-            let imageUrl=result.secure_url;
+        if (image) {
+            const reasult = await cloudinary.uploader.upload(image);
+            let imageUrl = result.secure_url;
         }
-        const message=new Message({
-            senderId,receiverId,text,
-            image:imageUrl,
+        const message = new Message({
+            senderId, receiverId, text,
+            image: imageUrl,
         })
         await message.save();
-        res.status(201).json({success:true,message})
+        const receiverSocketId = getReceiverSocketId(receiverId);
+
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit("message", message);
+        }
+
+
+        res.status(201).json({  message })
 
 
 
