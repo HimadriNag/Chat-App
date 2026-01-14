@@ -6,7 +6,7 @@ import {  getMessages, getUser, sendMessage } from "../controllers/message.contr
 const router=express.Router();
 router.get("/users",isAuthenticated,getUser);
 router.get("/:id",isAuthenticated,getMessages);
-router.post("/send/:receiverId",isAuthenticated,getMessages,sendMessage);
+router.post("/send/:receiverId",isAuthenticated,sendMessage);
 
 
 export default router;
