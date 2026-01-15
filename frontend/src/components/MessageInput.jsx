@@ -58,14 +58,14 @@ const MessageInput = () => {
   };
 
   return (
-    <div className="p-4 w-full border-t border-base-300">
+    <div className="p-2 md:p-4 w-full border-t border-base-300">
       {imagePreview && (
-        <div className="mb-3 flex items-center gap-2">
+        <div className="mb-2 md:mb-3 flex items-center gap-2">
           <div className="relative">
             <img
               src={imagePreview}
               alt="Preview"
-              className="w-20 h-20 object-cover rounded-lg border border-zinc-700"
+              className="w-16 md:w-20 h-16 md:h-20 object-cover rounded-lg border border-zinc-700"
             />
             <button
               onClick={removeImage}

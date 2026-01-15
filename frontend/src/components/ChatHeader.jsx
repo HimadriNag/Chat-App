@@ -7,12 +7,12 @@ const ChatHeader = () => {
   const { onlineUsers } = useAuthStore();
 
   return (
-    <div className="p-2.5 border-b border-base-300">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
+    <div className="p-2 md:p-2.5 border-b border-base-300">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
           {/* Avatar */}
-          <div className="avatar">
-            <div className="size-10 rounded-full relative bg-lime-400 flex items-center justify-center">
+          <div className="avatar flex-shrink-0">
+            <div className="size-8 md:size-10 rounded-full relative bg-lime-400 flex items-center justify-center">
               {selectedUser?.profilePic ? (
                 <img
                   src={selectedUser.profilePic}
@@ -20,7 +20,7 @@ const ChatHeader = () => {
                   className="w-full h-full object-cover rounded-full"
                 />
               ) : (
-                <span className="text-gray-900 font-bold text-sm">
+                <span className="text-gray-900 font-bold text-xs md:text-sm">
                   {selectedUser?.fullName?.charAt(0) || selectedUser?.name?.charAt(0) || "U"}
                 </span>
               )}
@@ -28,10 +28,9 @@ const ChatHeader = () => {
           </div>
 
           {/* User info */}
-          <div>
-            <h3 className="font-medium">{selectedUser?.fullName || selectedUser?.name}</h3>
-            <p className="text-sm text-base-content/70">
-
+          <div className="min-w-0 flex-1">
+            <h3 className="font-medium text-sm md:text-base truncate">{selectedUser?.fullName || selectedUser?.name}</h3>
+            <p className="text-xs md:text-sm text-base-content/70">
               {selectedUser?._id && onlineUsers?.includes(selectedUser._id) 
                 ? "Online" 
                 : "Offline"}
@@ -39,9 +38,8 @@ const ChatHeader = () => {
           </div>
         </div>
 
-        
-        <button onClick={() => setSelectedUser(null)}>
-          <X className="hover:text-error transition-colors" />
+        <button onClick={() => setSelectedUser(null)} className="flex-shrink-0">
+          <X className="size-5 md:size-6 hover:text-error transition-colors" />
         </button>
       </div>
     </div>

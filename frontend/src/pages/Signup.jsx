@@ -20,7 +20,7 @@ export default function Signup() {
     
   }
   return (
-    <div className="flex items-center justify-center mt-12">
+    <div className="flex items-center justify-center min-h-screen">
       <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
             
@@ -29,7 +29,7 @@ export default function Signup() {
                 }
             `}</style>
 
-      <div className="flex flex-col justify-center w-full max-w-80 rounded-xl px-6 py-8 border-2 border-lime-400 bg-white text-gray-900 text-sm shadow-lg shadow-lime-400/50">
+      <div className="flex flex-col justify-center w-full max-w-sm px-4 md:px-6 py-6 md:py-8 rounded-xl border-2 border-lime-400 bg-white text-gray-900 text-xs md:text-sm shadow-lg shadow-lime-400/50 mx-4 md:mx-0">
         <h2 className="text-2xl font-semibold text-lime-500">Sign Up</h2>
         <p className="text-lime-600 mt-1">Signup to your account</p>
         <form onSubmit={handleSubmit} className="mt-8">
