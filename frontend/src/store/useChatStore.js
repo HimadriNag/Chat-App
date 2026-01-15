@@ -17,7 +17,7 @@ export const useChatStore = create((set, get) => {
         const res = await axiosInstance.get("/messages/users");
         set({ users: res.data });
       } catch (error) {
-        // Safety check for error response
+        
         toast.error(error.response?.data?.message || "Failed to load users");
       } finally {
         set({ isUsersLoading: false });
@@ -38,7 +38,7 @@ export const useChatStore = create((set, get) => {
 
     sendMessage: async (messageData) => {
       const { selectedUser, messages } = get();
-      // Guard clause to prevent sending if no user is selected
+      
       if (!selectedUser?._id) {
         toast.error("Please select a user first");
         return;
@@ -67,9 +67,9 @@ export const useChatStore = create((set, get) => {
       if (!selectedUser) return;
 
       const socket = useAuthStore.getState().socket;
-      if (!socket) return; // Ensure socket exists
+      if (!socket) return; 
 
-      // Use .off first to prevent duplicate listeners
+      
       socket.off("newMessage"); 
 
       socket.on("newMessage", (newMessage) => {

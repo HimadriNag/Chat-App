@@ -12,15 +12,18 @@ const ChatHeader = () => {
         <div className="flex items-center gap-3">
           {/* Avatar */}
           <div className="avatar">
-            <div className="size-10 rounded-full relative">
-              <img
-                src={
-                  selectedUser?.profilePic ||
-                  "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                }
-                // FIXED: Added optional chaining here
-                alt={selectedUser?.name || "User"}
-              />
+            <div className="size-10 rounded-full relative bg-lime-400 flex items-center justify-center">
+              {selectedUser?.profilePic ? (
+                <img
+                  src={selectedUser.profilePic}
+                  alt={selectedUser?.name || "User"}
+                  className="w-full h-full object-cover rounded-full"
+                />
+              ) : (
+                <span className="text-gray-900 font-bold text-sm">
+                  {selectedUser?.fullName?.charAt(0) || selectedUser?.name?.charAt(0) || "U"}
+                </span>
+              )}
             </div>
           </div>
 
@@ -28,7 +31,7 @@ const ChatHeader = () => {
           <div>
             <h3 className="font-medium">{selectedUser?.fullName || selectedUser?.name}</h3>
             <p className="text-sm text-base-content/70">
-              {/* FIXED: Added optional chaining for ._id and safety check for onlineUsers array */}
+
               {selectedUser?._id && onlineUsers?.includes(selectedUser._id) 
                 ? "Online" 
                 : "Offline"}
@@ -36,7 +39,7 @@ const ChatHeader = () => {
           </div>
         </div>
 
-        {/* Close button - Moved outside the flex-gap div for better spacing */}
+        
         <button onClick={() => setSelectedUser(null)}>
           <X className="hover:text-error transition-colors" />
         </button>
