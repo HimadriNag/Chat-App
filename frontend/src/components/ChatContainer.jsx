@@ -19,7 +19,7 @@ const ChatContainer = () => {
   const messageEndRef = useRef(null);
 
   useEffect(() => {
-    // Safety check: Only fetch if selectedUser and its ID exist
+    
     if (selectedUser?._id) {
       getMessages(selectedUser._id);
       subscribeToMessages();

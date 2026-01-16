@@ -2,7 +2,20 @@ import toast from "react-hot-toast";
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import { io } from "socket.io-client";
-const BASE_URL = "http://localhost:5000";
+
+
+const getSocketUrl = () => {
+  const hostname = window.location.hostname;
+  const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
+  
+  if (isLocalhost) {
+    return "http://localhost:5000";
+  } else {
+    
+    return `http://${hostname}:5000`;
+  }
+};
+
 export const useAuthStore = create((set, get) => ({
   authUser: null,
   isSigningUp: false,
@@ -33,7 +46,7 @@ export const useAuthStore = create((set, get) => ({
       get().connectSocket();
     } catch (error) {
       console.log("error in signup", error);
-      toast.success(error.response.data.message);
+      toast.error(error.response?.data?.message || "Signup failed");
     } finally {
       set({ isSigningUp: false });
     }
@@ -48,7 +61,9 @@ export const useAuthStore = create((set, get) => ({
       get().connectSocket();
     } catch (error) {
       console.log("error in login", error);
-      toast.success(error.response.data.message);
+      const errorMsg = error.response?.data?.message || error.message || "Login failed";
+      console.log("Showing error:", errorMsg);
+      toast.error(errorMsg);
     } finally {
       set({ isLoggingIn: false });
     }
@@ -63,7 +78,7 @@ export const useAuthStore = create((set, get) => ({
       get().disconnectSocket();
     } catch (error) {
       console.log("error in logout", error);
-      toast.success(error.response.data.message);
+      toast.error(error.response?.data?.message || "Logout failed");
     }
   },
 
@@ -76,7 +91,7 @@ export const useAuthStore = create((set, get) => ({
       toast.success(res.data.message);
     } catch (error) {
       console.log("error in updateProfile", error);
-      toast.success(error.response.data.message);
+      toast.error(error.response?.data?.message || "Update failed");
     } finally {
       set({ isUpdatingProfile: false });
     }
@@ -86,7 +101,7 @@ export const useAuthStore = create((set, get) => ({
     const { authUser } = get();
     if (!authUser || get().socket?.connected) return;
 
-    const socket = io(BASE_URL, {
+    const socket = io(getSocketUrl(), {
       query: {
         userId: authUser._id,
       },

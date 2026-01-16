@@ -30,7 +30,7 @@ export const signup = async (req, res) => {
             res.status(201).json({
                 _id: user._id,
                 name: user.name,
-                eamil: user.eamil,
+                email: user.email,
                 profilePic: user.profilePic,
                 message: "User craeted successfully",
                 success: true,
@@ -66,7 +66,7 @@ export const login = async (req, res) => {
         res.status(201).json({
             _id: user._id,
             name: user.name,
-            eamil: user.eamil,
+            email: user.email,
             profilePic: user.profilePic,
             message: "User login successfully",
             success: true,
@@ -103,8 +103,8 @@ export const updateProfile = async (req, res) => {
         if (!profilePic) {
             return res.status(400).json({ message: "Profile picture is required", success: false });
         }
-        const reasult = await cloudinary.uploader.upload(profilePic);
-        const updateUser = await User.findByIdAndUpdate(userId, { profilePic: reasult.secure_url }, { new: true });
+        const result = await cloudinary.uploader.upload(profilePic);
+        const updateUser = await User.findByIdAndUpdate(userId, { profilePic: result.secure_url }, { new: true });
         res.status(200).json({
             updateUser,
             message: "Profile picture updated successfully",

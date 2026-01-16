@@ -7,11 +7,11 @@ const MessageInput = () => {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const fileInputRef = useRef(null);
-  const { sendMessage, selectedUser } = useChatStore(); // Added selectedUser from store
+  const { sendMessage, selectedUser } = useChatStore(); 
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (!file) return; // Safety check if user closes file picker without selecting
+    if (!file) return; 
 
     if (!file.type.startsWith("image/")) {
       toast.error("Please select an image file");
@@ -33,7 +33,7 @@ const MessageInput = () => {
   const handleSendMessage = async (e) => {
     e.preventDefault();
     
-    // Safety check: Don't send if empty OR if no user is selected
+    
     if (!text.trim() && !imagePreview) return;
     if (!selectedUser?._id) {
       toast.error("Please select a user to start chatting");
@@ -46,12 +46,12 @@ const MessageInput = () => {
         image: imagePreview,
       });
 
-      // Clear form
+      
       setText("");
       setImagePreview(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
-      // toast.error is usually better for user feedback than just console.error
+      
       toast.error("Failed to send message. Please try again.");
       console.error("Failed to send message:", error);
     }
@@ -99,7 +99,7 @@ const MessageInput = () => {
 
           <button
             type="button"
-            className={`hidden sm:flex btn btn-circle
+            className={`flex btn btn-circle btn-sm md:btn-md active:scale-95 transition-transform
                      ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
             onClick={() => fileInputRef.current?.click()}
           >
@@ -108,8 +108,14 @@ const MessageInput = () => {
         </div>
         <button
           type="submit"
-          className="btn btn-sm btn-circle"
+          className="btn btn-sm md:btn-md btn-circle active:scale-95 transition-transform"
           disabled={!text.trim() && !imagePreview}
+          onTouchEnd={(e) => {
+            if (!text.trim() && !imagePreview) {
+              e.preventDefault();
+              toast.error("Please enter a message or select an image");
+            }
+          }}
         >
           <Send size={22} />
         </button>

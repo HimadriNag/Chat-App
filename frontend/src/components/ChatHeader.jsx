@@ -11,7 +11,7 @@ const ChatHeader = () => {
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
           {/* Avatar */}
-          <div className="avatar flex-shrink-0">
+          <div className="avatar shrink-0">
             <div className="size-8 md:size-10 rounded-full relative bg-lime-400 flex items-center justify-center">
               {selectedUser?.profilePic ? (
                 <img
@@ -38,7 +38,7 @@ const ChatHeader = () => {
           </div>
         </div>
 
-        <button onClick={() => setSelectedUser(null)} className="flex-shrink-0">
+        <button onClick={() => setSelectedUser(null)} className="shrink-0 active:scale-95 transition-transform p-2 hover:bg-base-300 rounded-lg">
           <X className="size-5 md:size-6 hover:text-error transition-colors" />
         </button>
       </div>

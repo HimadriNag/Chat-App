@@ -7,7 +7,20 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173"],
+    origin: function(origin, callback) {
+      // Allow requests from localhost and local network addresses
+      if(!origin || 
+         origin.includes("localhost") || 
+         origin.includes("127.0.0.1") ||
+         origin.includes("192.168") ||
+         origin.includes("10.") ||
+         origin.includes("172.")) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true
   },
 });
 
