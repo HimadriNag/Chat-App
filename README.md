@@ -147,7 +147,6 @@ http://localhost:5000
 - Group Chat Feature  
 - End-to-End Encryption  
 - Push Notifications  
-- Cloud Image Storage  
 - Message Delete / Edit Option  
 - Deployment to Production  
 
